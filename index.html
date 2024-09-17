@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветовые модели</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ЦВЕТОВЫЕ МОДЕЛИ</h1>
+        <div id="notification" class="notification" style="display: none;"></div>
+        <div class="color-picker">
+            <input type="color" id="colorPicker" />
+            <div class="color-box" id="colorDisplay"></div>
+        </div>
+        <div class="inputs">
+            <h2>RGB:</h2>
+            <input type="number" id="R" max="255" min="0" />
+            <input type="range" id="rRange" min="0" max="255" />
+            <input type="number" id="G" max="255" min="0" />
+            <input type="range" id="gRange" min="0" max="255" />
+            <input type="number" id="B" max="255" min="0" />
+            <input type="range" id="bRange" min="0" max="255" />
+        </div>
+        <div class="inputs">
+            <h2>XYZ:</h2>
+            <input type="number" id="X" />
+            <input type="range" id="XRange" min="0" />
+            <input type="number" id="Y" />
+            <input type="range" id="YRange" min="0" />
+            <input type="number" id="Z" />
+            <input type="range" id="ZRange" min="0" />
+        </div>
+        <div class="inputs">
+            <h2>HSV:</h2>
+            <input type="number" id="H" max="360" min="0" />
+            <input type="range" id="HRange" min="0" max="360" />
+            <input type="number" id="S" max="100" min="0" step="0.01" />
+            <input type="range" id="SRange" min="0" max="100" step="0.01" />
+            <input type="number" id="V" max="100" min="0" step="0.01" />
+            <input type="range" id="VRange" min="0" max="100" step="0.01" />
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
