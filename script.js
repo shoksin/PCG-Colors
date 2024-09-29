@@ -33,9 +33,14 @@ function updateColorsFromXYZ() {
 }
 
 function updateColorsFromHSV() {
-    const H = parseFloat(document.getElementById('H').value) || 0;
+    let H = parseFloat(document.getElementById('H').value) || 0;
     const S = parseFloat(document.getElementById('S').value) / 100 || 0;
     const V = parseFloat(document.getElementById('V').value) / 100 || 0;
+
+    // Сброс H на 0, если оно достигает 360
+    if (H >= 360) {
+        H = 0;
+    }
 
     const rgb = hsvToRgb(H, S, V);
     const xyz = rgbToXyz(rgb.r, rgb.g, rgb.b);
@@ -97,7 +102,6 @@ function syncRangeInput(numberInput, rangeInput, updateFunction) {
     });
 }
 
-
 syncRangeInput(document.getElementById('R'), document.getElementById('rRange'), updateColorsFromRGB);
 syncRangeInput(document.getElementById('G'), document.getElementById('gRange'), updateColorsFromRGB);
 syncRangeInput(document.getElementById('B'), document.getElementById('bRange'), updateColorsFromRGB);
@@ -119,7 +123,6 @@ colorPicker.addEventListener('input', (event) => {
     document.getElementById('B').value = rgb.b;
     updateColorsFromRGB();
 });
-
 
 function hexToRgb(hex) {
     const bigint = parseInt(hex.slice(1), 16);
@@ -205,7 +208,6 @@ function xyzToRgb(X, Y, Z) {
     let r = R_f > 0.0031308 ? (1.055 * Math.pow(R_f, 1 / 2.4) - 0.055) * 255 : R_f * 12.92 * 255;
     let g = G_f > 0.0031308 ? (1.055 * Math.pow(G_f, 1 / 2.4) - 0.055) * 255 : G_f * 12.92 * 255;
     let b = B_f > 0.0031308 ? (1.055 * Math.pow(B_f, 1 / 2.4) - 0.055) * 255 : B_f * 12.92 * 255;
-
 
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
         displayNotification("(XYZ->RGB) значения были обрезаны.");
