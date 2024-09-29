@@ -1,6 +1,48 @@
 const colorPicker = document.getElementById('colorPicker');
 const colorDisplay = document.getElementById('colorDisplay');
 
+
+function limitValue(inputElement, max) {
+    inputElement.addEventListener('input', () => {
+        if (inputElement.value > max) {
+            inputElement.value = max;
+        }
+    });
+}
+
+function checkInput(inputElement) {
+    inputElement.addEventListener('input', () => {
+        const value = inputElement.value;
+        if (/[+-]/.test(value)) {
+            inputElement.value = value.replace(/[+-]/g, ''); 
+        }
+    });
+}
+
+checkInput(document.getElementById('R'));
+checkInput(document.getElementById('G'));
+checkInput(document.getElementById('B'));
+checkInput(document.getElementById('X'));
+checkInput(document.getElementById('Y'));
+checkInput(document.getElementById('Z'));
+checkInput(document.getElementById('H'));
+checkInput(document.getElementById('S'));
+checkInput(document.getElementById('V'));
+
+
+limitValue(document.getElementById('R'), 255);
+limitValue(document.getElementById('G'), 255);
+limitValue(document.getElementById('B'), 255);
+
+limitValue(document.getElementById('X'), 100);
+limitValue(document.getElementById('Y'), 100); 
+limitValue(document.getElementById('Z'), 100); 
+
+limitValue(document.getElementById('H'), 360);
+limitValue(document.getElementById('S'), 100);
+limitValue(document.getElementById('V'), 100);
+
+
 function updateColorsFromRGB() {
     const r = parseInt(document.getElementById('R').value) || 0;
     const g = parseInt(document.getElementById('G').value) || 0;
@@ -32,12 +74,28 @@ function updateColorsFromXYZ() {
     updateRangeInputs();
 }
 
+// function updateColorsFromXYZ() {
+//     const X = parseFloat(document.getElementById('X').value) || 0;
+//     const Y = parseFloat(document.getElementById('Y').value) || 0;
+//     const Z = parseFloat(document.getElementById('Z').value) || 0;
+
+//     const hsv = xyzToHsv(X, Y, Z);
+//     const rgb = xyzToRgb(X / 100, Y / 100, Z / 100);
+
+//     document.getElementById('R').value = rgb.r;
+//     document.getElementById('G').value = rgb.g;
+//     document.getElementById('B').value = rgb.b;
+
+//     updateHSVInputs(hsv);
+//     updateColorDisplay(rgb.r, rgb.g, rgb.b);
+//     updateRangeInputs();
+// }
+
 function updateColorsFromHSV() {
     let H = parseFloat(document.getElementById('H').value) || 0;
     const S = parseFloat(document.getElementById('S').value) / 100 || 0;
     const V = parseFloat(document.getElementById('V').value) / 100 || 0;
 
-    // Сброс H на 0, если оно достигает 360
     if (H >= 360) {
         H = 0;
     }
@@ -210,7 +268,7 @@ function xyzToRgb(X, Y, Z) {
     let b = B_f > 0.0031308 ? (1.055 * Math.pow(B_f, 1 / 2.4) - 0.055) * 255 : B_f * 12.92 * 255;
 
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-        displayNotification("(XYZ->RGB) значения были обрезаны.");
+        displayNotification("При переводах (XYZ->RGB) и (XYZ->HSV) значения были обрезаны. Потеря точности перевода!");
     }
 
     return {
@@ -219,6 +277,45 @@ function xyzToRgb(X, Y, Z) {
         b: Math.round(Math.max(0, Math.min(255, b)))
     };
 }
+
+// function xyzToHsv(X, Y, Z) {
+//     // Преобразование XYZ в HSV  
+//     // Нормализация Y для получения яркости V  
+//     const v = Y; // Яркость (Value) - это Y в системе XYZ
+
+//     // Проверяем, является ли Y нулевым  
+//     if (v === 0) {
+//         return { H: 0, S: 0, V: 0 }; // В случае черного цвета  
+//     }
+
+//     // Преобразование XYZ в цветовой круг (Hue) и насыщенность (Saturation)
+//     const max = Math.max(X, Y, Z);
+//     const min = Math.min(X, Y, Z);
+//     const d = max - min;
+
+//     let h, s;
+
+//     // Вычисляем насыщенность (S)
+//     s = max === 0 ? 0 : d / max;
+
+//     // Вычисляем оттенок (H)
+//     if (max === X) {
+//         h = (Y - Z) / d + (Y < Z ? 6 : 0);
+//     } else if (max === Y) {
+//         h = (Z - X) / d + 2;
+//     } else { // max === Z  
+//         h = (X - Y) / d + 4;
+//     }
+    
+//     h /= 6; // Приведение к диапазону [0, 1]
+
+//     // Возвращаем результат с округлением H и нормализацией S и V  
+//     return {
+//         H: Math.round(h * 360), // Угол в градусах от 0 до 360  
+//         S: parseFloat(s.toFixed(2)), // Saturation от 0 до 1  
+//         V: parseFloat(v.toFixed(2)) // Value от 0 до 1  
+//     };
+// }
 
 function displayNotification(message) {
     const notification = document.getElementById('notification');
