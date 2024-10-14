@@ -235,7 +235,6 @@ function hsvToRgb(h, s, v) {
         case 5: (r = v, g = p, b = q); break;
     }
 
-    
     displayNotification("При переводе из HSV значения округляются. Потеря точности перевода!");
 
     return {
